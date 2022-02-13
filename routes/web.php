@@ -14,19 +14,14 @@ use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 |
 */
 
-
-Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['referral']], function() {
-
-
-
-
+Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['referral']], function () {
     Route::get('/', \App\Http\Livewire\App\Main\Index::class)->name('home');
     Route::get('/article/index', \App\Http\Livewire\App\Article\Index::class)->name('article.index');
     Route::get('/article/view/{article}', \App\Http\Livewire\App\Article\View::class)->name('article.view');
 
-    Route::group(['middleware' => ['auth:sanctum', 'verified']], function() {
+    Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
 
-        Route::any('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+        // Route::any('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
         Route::get('/user/verify', \App\Http\Livewire\App\User\Verify::class)->name('user.verify');
         Route::get('/user/mobile', \App\Http\Livewire\App\User\Mobile::class)->name('user.mobile');
@@ -34,16 +29,13 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['re
         Route::any('/notification/view/{notification}', \App\Http\Livewire\App\Notification\View::class)->name('notification.view');
         Route::any('/faqs/index', \App\Http\Livewire\App\FAQ\Index::class)->name('faqs.index');
 
-
-        Route::group(['prefix' => config('bap.panel-prefix-url')], function() {
+        Route::group(['prefix' => config('bap.panel-prefix-url')], function () {
             Route::get('/dashboard/index', \App\Http\Livewire\Panel\Dashboard\Index::class)->name('panel.dashboard.index');
 
             Route::get('/support/ticket/index', \App\Http\Livewire\Panel\Support\Ticket\Index::class)->name('panel.support.ticket.index');
             Route::get('/support/ticket/create', \App\Http\Livewire\Panel\Support\Ticket\Create::class)->name('panel.support.ticket.create');
             Route::get('/support/ticket/view/{ticket}', \App\Http\Livewire\Panel\Support\Ticket\View::class)->name('panel.support.ticket.view');
-
         });
-
 
         Route::group(['prefix' => config('bap.admin-prefix-url'), 'middleware' => ['auth:sanctum', 'verified', 'admin']], function () {
             Route::get('/dashboard/index', \App\Http\Livewire\Admin\Dashboard\Index::class)->name('admin.dashboard.index');
@@ -61,10 +53,6 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['re
             Route::get('/support/ticket/index', \App\Http\Livewire\Admin\Support\Ticket\Index::class)->name('admin.support.ticket.index');
             Route::get('/support/ticket/archive', \App\Http\Livewire\Admin\Support\Ticket\Archive::class)->name('admin.support.ticket.archive');
             Route::get('/support/ticket/view/{ticket}', \App\Http\Livewire\Admin\Support\Ticket\View::class)->name('admin.support.ticket.view');
-
         });
     });
-
 });
-
-
